@@ -1,40 +1,76 @@
+/* Global stil */
 body {
     margin: 0;
     padding: 0;
-    background-color: #000;
-    color: #fff;
+    background-color: #000000;
+    color: #ffffff;
     font-family: 'Courier New', monospace;
-    font-size: 20px;
+    font-size: 18px;
 }
 
+/* Centrering og layout */
 .container {
     max-width: 800px;
-    margin: 100px auto;
+    margin: 80px auto;
     padding: 20px;
     text-align: center;
 }
 
+/* Overskrifter */
 h1 {
-    color: #cc00ff; /* neon lilla */
+    color: #cc00ff; /* neon-lilla */
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-size: 2.5rem;
 }
 
-a.button {
+/* Knapper og links */
+.button {
     display: inline-block;
-    margin-top: 20px;
+    margin: 10px;
     padding: 12px 24px;
     background-color: #cc00ff;
-    color: #000;
+    color: #000000;
     text-decoration: none;
     font-weight: bold;
     border: 2px solid #cc00ff;
-    transition: 0.3s;
-    font-size: 22px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 20px;
 }
 
-a.button:hover {
+.button:hover {
     background-color: transparent;
     color: #cc00ff;
 }
+
+/* Sektion til knapgrupper */
+.button-group {
+    margin-top: 30px;
+}
+
+/* LinkedIn-sektion */
+.linkedin-section {
+    margin-top: 60px;
+}
+
+.project-card {
+    background-color: #111;
+    border: 2px solid #cc00ff;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.project-card h2 {
+    color: #cc00ff;
+    margin-top: 0;
+}
+
+.project-card p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+

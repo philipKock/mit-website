@@ -1,0 +1,50 @@
+' VBA Script: Send mails from shared mailbox (used for mail merge via Outlook)
+Sub SendFromSharedMailbox()
+    Dim OutApp As Outlook.Application
+    Dim OutMail As Outlook.MailItem
+    Dim objOutlookRecip As Outlook.Recipient
+    Dim ns As Outlook.Namespace
+    Dim Outbox As Outlook.Folder
+    Dim Item As Object
+
+    Set ns = Application.GetNamespace("MAPI")
+    Set Outbox = ns.GetDefaultFolder(olFolderOutbox)
+    Set OutApp = Outlook.Application
+
+    For Each Item In Outbox.Items
+        If TypeOf Item Is MailItem Then
+            Set OutMail = Item
+            Set objOutlookRecip = OutMail.Recipients.Add("ENTERSHAREDMAILBOXHERE@yourcompany.com")
+            objOutlookRecip.Resolve
+            If objOutlookRecip.Resolved Then
+                OutMail.SentOnBehalfOfName = "ENTERSHAREDMAILBOXHERE@yourcompany.com"
+                OutMail.Send
+            End If
+        End If
+    Next
+End Sub
+
+
+# Mail Merge with Shared Mailbox (Outlook + VBA)
+This setup allows you to send mail-merged emails from a shared mailbox instead of your personal Outlook address.
+Can be handy if you need to mass-send email from an excel-list, and want to use another adress such as no-reply, derpartment specific or similar.
+
+##How it works:
+NB: Before you run the script, put Outlook in offline mode
+1. In offline mode, you run a normal mail merge from Word to Outlook (the emails are placed in your Outbox).
+2. The VBA script is activated and goes through all mail items in the Outbox and changes the sender to the shared mailbox.
+4. You then go online again, and the emails are sent from the shared mailbox.
+
+## How to use:
+- Open Outlook.
+- Go offline
+- Run the mail merge as per usual.
+- Press `Alt + F11` to open the VBA editor.
+- Insert the script into `ThisOutlookSession`.
+- Enable macros under `File > Options > Trust Center`.
+- Run the macro after your mail merge is complete 
+- Go online
+- All emails in your outbox will be sent from the share mailbox.
+
+Bon appétit :)
+
