@@ -9,11 +9,7 @@
 </head>
 <body>
 
-    <nav class="topnav">
-        <a href="index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="tasktamer.html" class="highlight">Latest Project</a>
-    </nav>
+<div id="header"></div>
 
     <div class="container">
         <h1>TaskTamer App</h1>
@@ -21,12 +17,22 @@
 
         <div class="button-group">
             <a href="https://task-tamer-matrix-master.lovable.app/" class="button" target="_blank">Open App</a>
+            <a href="https://github.com/philipKock" class="button ghost" target="_blank">View Code (GitHub)</a>
         </div>
 
         <div class="button-group">
             <a href="projects.html" class="button">← Back to Projects</a>
         </div>
     </div>
+
+<script>
+  fetch("header.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("header").innerHTML = data;
+    });
+</script>
+
 
 </body>
 </html>
