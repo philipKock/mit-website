@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number - Philip Kock</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <style>
+        .game-container {
+            background: #18171c;
+            color: #fff;
+            padding: 32px 24px;
+            margin: 40px auto;
+            max-width: 400px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px #cc00ff44;
+            text-align: center;
+        }
+        .game-container input,
+        .game-container button {
+            font-size: 1.2em;
+            padding: 0.4em 1em;
+            margin: 0.3em 0.2em;
+            border-radius: 6px;
+            border: none;
+        }
+        .game-container button {
+            background: #cc00ff;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .game-container .message {
+            margin-top: 1em;
+            font-size: 1.1em;
+            min-height: 2em;
+        }
+        .play-again-btn {
+            margin-top: 1em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header"></div>
+    <div class="container">
+        <div class="game-container">
+            <h1>Guess the Number</h1>
+            <p>
+                I am thinking of a number between <strong>1 and 20</strong>.<br>
+                Can you guess it within <strong>6 tries</strong>?
+            </p>
+            <input type="text" id="playerName" placeholder="Your name" autocomplete="off"><br>
+            <button id="startBtn" onclick="startGame()">Start Game</button>
+            <div id="gameArea" style="display:none;">
+                <p>Take a guess:</p>
+                <input type="number" id="guessInput" min="1" max="20" autocomplete="off">
+                <button id="guessBtn" onclick="submitGuess()">Guess</button>
+                <div class="message" id="message"></div>
+            </div>
+            <button class="play-again-btn" id="playAgainBtn" onclick="resetGame()">Play again</button>
+        </div>
+        <div class="button-group">
+            <a href="projects.html" class="button">← Back to Projects</a>
+        </div>
+    </div>
+
+    <script>
+        let secretNumber, guessesTaken, playerName, gameOver = false;
+
+        function startGame() {
+            playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Please enter your name to start.');
+                return;
+            }
+            secretNumber = Math.floor(Math.random() * 20) + 1;
+            guessesTaken = 0;
+            gameOver = false;
+            document.getElementById('gameArea').style.display = 'block';
+            document.getElementById('playerName').disabled = true;
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('message').textContent = '';
+            document.getElementById('guessInput').value = '';
+            document.getElementById('guessInput').disabled = false;
+            document.getElementById('guessBtn').disabled = false;
+            document.getElementById('playAgainBtn').style.display = 'none';
+            document.getElementById('guessInput').focus();
+        }
+
+        function submitGuess() {
+            if (gameOver) return;
+            const guessInput = document.getElementById('guessInput');
+            const guess = parseInt(guessInput.value, 10);
+            if (isNaN(guess) || guess < 1 || guess > 20) {
+                document.getElementById('message').textContent = "Please enter a number between 1 and 20.";
+                return;
+            }
+            guessesTaken++;
+            if (guess < secretNumber) {
+                document.getElementById('message').textContent = "Your guess is too low.";
+            } else if (guess > secretNumber) {
+                document.getElementById('message').textContent = "Your guess is too high.";
+            } else {
+                document.getElementById('message').innerHTML = `Congratulations, ${playerName}!<br>You guessed the number in ${guessesTaken} tries.`;
+                endGame();
+                return;
+            }
+            if (guessesTaken >= 6) {
+                document.getElementById('message').innerHTML = `Too bad, ${playerName}.<br>The number was ${secretNumber}.`;
+                endGame();
+            } else {
+                guessInput.value = '';
+                guessInput.focus();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('guessInput').disabled = true;
+            document.getElementById('guessBtn').disabled = true;
+            document.getElementById('playAgainBtn').style.display = 'inline-block';
+            gameOver = true;
+        }
+
+        function resetGame() {
+            document.getElementById('playerName').disabled = false;
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('playAgainBtn').style.display = 'none';
+            document.getElementById('message').textContent = '';
+            document.getElementById('playerName').focus();
+            document.getElementById('guessInput').value = '';
+        }
+
+        // Enter key handling
+        document.addEventListener('keydown', function(event) {
+            if (!gameOver && document.getElementById('gameArea').style.display === 'block') {
+                if (event.key === "Enter") {
+                    if (document.activeElement === document.getElementById('guessInput')) {
+                        submitGuess();
+                    } else if (document.activeElement === document.getElementById('playerName') && !document.getElementById('startBtn').disabled) {
+                        startGame();
+                    }
+                }
+            } else if (gameOver && event.key === "Enter" && document.getElementById('playAgainBtn').style.display === 'inline-block') {
+                resetGame();
+            }
+        });
+    </script>
+    <script>
+      // JS til at loade header.html
+      fetch("header.html")
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById("header").innerHTML = data;
+        });
+    </script>
+</body>
+</html>
